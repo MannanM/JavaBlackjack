@@ -16,12 +16,17 @@ public class Card implements Comparable {
         return value;
     }
 
+    public Suite getSuite() {
+        return suite;
+    }
+
     @Override
     public int compareTo(Object o) {
         return value.getValue() - ((Card)o).getValue().getValue();
     }
 
-    public Suite getSuite() {
-        return suite;
+    @Override
+    public String toString() {
+        return String.format("%s of %s", value.getDisplay(), suite.getName());
     }
 }

@@ -1,9 +1,21 @@
 package com.mannanlive.jbj.models;
 
+import com.mannanlive.jbj.constants.Event;
+import com.mannanlive.jbj.interfaces.Subscriber;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class DeckTest {
+    @Mock
+    private Subscriber subscriber;
+
+    @InjectMocks
+    private Deck deck = new Deck(1);
 
     @Test(expected = IllegalArgumentException.class)
     public void canNotInitialiseDeckWithABadNumber() {
@@ -18,12 +30,11 @@ public class DeckTest {
 
     @Test
     public void deckCanShuffle() {
-        new Deck(1).shuffle();
+        deck.shuffle();
     }
 
     @Test
     public void deckCanDrawACardAndRemovesIt() {
-        Deck deck = new Deck(1);
         Card card = deck.draw();
         Assert.assertNotNull(card);
 
@@ -34,9 +45,10 @@ public class DeckTest {
         }
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void deckCanRunOutOfCards() {
-        Deck deck = new Deck(1);
+        deck.addSubscriber(subscriber);
+        subscriber.notify(Event.OUT_OF_CARDS);
         for (int i = 0; i < 53; i++) {
             deck.draw();
         }

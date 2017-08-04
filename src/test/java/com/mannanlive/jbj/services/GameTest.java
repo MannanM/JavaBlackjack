@@ -1,6 +1,5 @@
 package com.mannanlive.jbj.services;
 
-import com.mannanlive.jbj.constants.GameState;
 import com.mannanlive.jbj.constants.Suite;
 import com.mannanlive.jbj.constants.Value;
 import com.mannanlive.jbj.interfaces.Screen;
@@ -13,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import static net.bytebuddy.matcher.ElementMatchers.is;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -34,7 +34,8 @@ public class GameTest {
                 new Card(Suite.CLUBS, Value.ACE), //player
                 new Card(Suite.CLUBS, Value.TEN));
 
-        Assert.assertEquals(GameState.BLACKJACK, game.play());
+        when(screen.getInput()).thenReturn("STAND");
+        Assert.assertEquals(150.0, game.play().get(0).calculatePayout(100), 0);
     }
 
     @Test
@@ -48,7 +49,7 @@ public class GameTest {
 
         when(screen.getInput()).thenReturn("HIT", "STAND");
 
-        Assert.assertEquals(GameState.WON, game.play());
+        Assert.assertEquals(100.0, game.play().get(0).calculatePayout(100), 0);
     }
 
 }
